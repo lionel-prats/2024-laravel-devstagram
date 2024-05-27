@@ -40,14 +40,15 @@ class FormValidator {
 
     getErrorMessage(rule, value) {
         const messages = {
-            required: 'este campo es obligatorio',
-            validEmail: 'este campo debe ser un email válido',
-            minLength: `este campo debe tener al menos ${value} caracteres`,
-            maxLength: `este campo no debe exceder de ${value} caracteres`,
-            validNumber: 'este campo debe ser un número válido',
-            min: `el número debe ser mayor o igual a ${value}`,
-            max: `el número debe ser menor o igual a ${value}`,
-            selectRequired: 'debe seleccionar una opción'
+            required: 'Este campo es obligatorio',
+            validEmail: 'Este campo debe ser un email válido',
+            minLength: `Este campo debe tener al menos ${value} caracteres`,
+            maxLength: `Este campo no debe exceder de ${value} caracteres`,
+            validNumber: 'Este campo debe ser un número válido',
+            min: `El número debe ser mayor o igual a ${value}`,
+            max: `El número debe ser menor o igual a ${value}`,
+            selectRequired: 'Debe seleccionar una opción',
+            matches: 'Las contraseñas deben coincidir'
         };
         return messages[rule];
     }
@@ -83,5 +84,10 @@ class FormValidator {
 
     selectRequired(value, _, fieldElement) {
         return fieldElement.selectedIndex !== 0;
+    }
+
+    matches(value, fieldToMatch) {
+        const fieldToMatchElement = this.form.querySelector(`[name="${fieldToMatch}"]`);
+        return value === fieldToMatchElement.value.trim();
     }
 }

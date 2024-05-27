@@ -18,11 +18,11 @@
                     >Nombre</label>
                     <input 
                         class="border p-3 w-full rounded-lg @error('name') border-red-500 @enderror"
+                        value="{{ old('name') }}"
                         type="text"
                         id="name"
                         name="name"
                         placeholder="Tu nombre"
-                        value="{{ old('name') }}"
                     >
                     @error("name")
                         <p 
@@ -36,7 +36,8 @@
                         for="username"
                     >Username</label>
                     <input 
-                        class="border p-3 w-full rounded-lg"
+                        class="border p-3 w-full rounded-lg @error('username') border-red-500 @enderror"
+                        value="{{ old('username') }}"
                         type="text"
                         id="username"
                         name="username"
@@ -54,7 +55,8 @@
                         for="email"
                     >Email</label>
                     <input 
-                        class="border p-3 w-full rounded-lg"
+                        class="border p-3 w-full rounded-lg @error('email') border-red-500 @enderror"
+                        value="{{ old('email') }}"
                         type="email"
                         id="email"
                         name="email"
@@ -72,7 +74,7 @@
                         for="password"
                     >Pasword</label>
                     <input 
-                        class="border p-3 w-full rounded-lg"
+                        class="border p-3 w-full rounded-lg @error('password') border-red-500 @enderror"
                         type="password"
                         id="password"
                         name="password"
@@ -115,9 +117,10 @@
 
         const rules = {
             name: ['required', { maxLength: 30 }],
-            // email: ['required', 'validEmail'],
-            // cantidad: ['required', 'validNumber', { min: 1 }, { max: 100 }],
-            // etiqueta: ['selectRequired']
+            username: ['required', { minLength: 3 }, { maxLength: 30 }],
+            email: ['required', 'validEmail', { maxLength: 60 }],
+            password: ['required', { minLength: 6 }],
+            password_confirmation: [{ matches: 'password' }],
         };
 
         const validator = new FormValidator('user-register-form', rules);

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
@@ -12,15 +15,26 @@ class RegisterController extends Controller
     }
     public function store(Request $request)
     {
-        // validacion
+        // modificamos parte del Request antes de la validacion para que ésta no falle v75()
+        // ver explicacion en 0-notas-curso-valdez.txt
+        $request->request->add(["username" => Str::slug($request->username)]);
+
+        // validacion de formulario desde el backend
         $this->validate($request, [
-            // "name" => "required|min:5", 
-            "name" => ["required", "max:30"],  
-            "username" => "required|unique:users|min:3|max:20",  
-            "email" => "required|unique:users|email|max:60",  
-            "password" => "required", 
-            // "password_confirmation" => "required|unique:users|min:5|max:20",   
+            // esta sintaxis y las de abajo son igualmente validas
+            "name" => ["required", "max:30"], 
+            "username" => "required|min:3|max:30|unique:users",  
+            "email" => "required|email|max:60|unique:users",  
+            "password" => "required|min:6|confirmed", 
         ]);
-        dd("paso la validacion");
+
+        User::create([
+            "name" => $request->get("name"),
+            "email" => $request->email,
+            "password" => $request->get("password"),
+            // "password" => Hash::make($request->get("password")), (al menos desde la version 10.10 de laravel el hash es automatico)
+            "username" => $request->username,
+        ]);
+        return redirect()->route("posts.index");
     }
 }
