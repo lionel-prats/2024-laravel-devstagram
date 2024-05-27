@@ -34,7 +34,8 @@ class RegisterController extends Controller
             "password" => $request->get("password"),
             // "password" => Hash::make($request->get("password")), (al menos desde la version 10.10 de laravel el hash es automatico)
             "username" => $request->username,
-        ]);
+        ]);        
+        auth()->attempt($request->only("email", "password"));
         return redirect()->route("posts.index");
     }
 }
