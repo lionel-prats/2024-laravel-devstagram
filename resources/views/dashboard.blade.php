@@ -1,6 +1,6 @@
 @extends("layouts.app")
 
-@section("titulo", "Peril: $user->username")
+@section("titulo", "Perfil: $user->username")
 
 @section('contenido')
     <div class="flex justify-center">

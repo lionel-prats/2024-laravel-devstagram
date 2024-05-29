@@ -20,4 +20,8 @@ class PostController extends Controller
         ];
         return view("dashboard", $data);
     }
+    public function create()
+    {
+        return view("posts.create");
+    }
 }
