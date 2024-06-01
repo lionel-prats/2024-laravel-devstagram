@@ -21,5 +21,6 @@ Route::post('/logout', [LogoutController::class, "store"])->name("logout");
 // Route::get('/muro', [PostController::class, "index"])->name("posts.index");
 Route::get('/{user:username}', [PostController::class, "index"])->name("posts.index");
 Route::get('/posts/create', [PostController::class, "create"])->name("posts.create");
+Route::post('/posts', [PostController::class, "store"])->name("posts.store");
 
 Route::post('/imagen', [ImagenController::class, "store"])->name("imagenes.store");
