@@ -86,4 +86,12 @@ class PostController extends Controller
         ];
         return view("posts.show", $data);
     }
+    public function destroy(Post $post)
+    {
+        // ejecucion de PostPolicy->delete() (v129)
+        $this->authorize("delete", $post); 
+        
+        $post->delete();
+        return redirect()->route("posts.index", auth()->user()->username)->with("publicacion_eliminada", "Publicación Eliminada Correctamente");
+    }
 }

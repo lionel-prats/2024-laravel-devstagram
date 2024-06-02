@@ -1,8 +1,12 @@
 @extends("layouts.app")
 
 @section("titulo", "Perfil: $user->username")
-
 @section('contenido')
+    @session('publicacion_eliminada')
+        <div class="bg-green-500 p-2 rounded-lg mb-6 text-white text-center uppercase font-bold">
+            {{session("publicacion_eliminada")}}
+        </div>
+    @endsession
     <div class="flex justify-center">
         <div class="w-full md:8/12 lg:6/12 flex flex-col items-center md:flex-row">
             <div class="w-8/12 lg:w-6/12 px-5">
