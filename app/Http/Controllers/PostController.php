@@ -11,7 +11,9 @@ class PostController extends Controller
     public function __construct()
     {
         // con esto restrinjo el acceso a cualquier ruta que maneje cualquiera de los metodos de este controlador a usuarios autenticados vvv
-        $this->middleware("auth");
+        // $this->middleware("auth");
+
+        $this->middleware("auth")->except(["index","show"]);
     }
 
     private function ddl($data, $exit = null) 
@@ -79,7 +81,7 @@ class PostController extends Controller
     public function show(User $user, Post $post)
     {
         $data = [
-            "user" => $user,
+            "user" => $user, // objeto User del usuario del muro que estamos visitando
             "post" => $post,
         ];
         return view("posts.show", $data);
