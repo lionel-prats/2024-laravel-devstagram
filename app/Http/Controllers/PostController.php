@@ -37,11 +37,18 @@ class PostController extends Controller
 
     public function index(User $user)
     {
-        // dd($user->posts);
-        // $this->ddl($user->posts);
+        // // acceder a los posts asociados a un usuario usando la coleccion posts() definida en el modelo User (v117) vvv
+        // foreach($user->posts as $i=>$post){
+        //     $this->ddl($i . " = " . $post->titulo);
+        // }
+
+        // $posts = Post::where("user_id", $user->id)->get();
+        // $posts = Post::where("user_id", $user->id)->simplePaginate(4);
+        $posts = Post::where("user_id", $user->id)->paginate(8);
 
         $data = [
             "user" => $user,
+            "posts" => $posts,
         ];
         return view("dashboard", $data);
     }
@@ -53,7 +60,6 @@ class PostController extends Controller
     {   
         // $this->ddl(auth()->user(), "pe");   // App\Models\User Object
         // $this->ddl($request->user(), "pe"); // App\Models\User Object
-
         $this->validate($request, [
             "titulo" => "required|max:255",  
             "descripcion" => "required",  
@@ -68,7 +74,6 @@ class PostController extends Controller
             "imagen" => $request->imagen,
             // "user_id" => auth()->user()->id,
         ]);
-        
         return redirect()->route("posts.index", auth()->user()->username);
     }
 }
