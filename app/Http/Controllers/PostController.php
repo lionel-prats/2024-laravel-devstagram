@@ -37,6 +37,9 @@ class PostController extends Controller
 
     public function index(User $user)
     {
+        // dd($user->posts);
+        // $this->ddl($user->posts);
+
         $data = [
             "user" => $user,
         ];
@@ -48,18 +51,23 @@ class PostController extends Controller
     }
     public function store(Request $request)
     {   
+        // $this->ddl(auth()->user(), "pe");   // App\Models\User Object
+        // $this->ddl($request->user(), "pe"); // App\Models\User Object
+
         $this->validate($request, [
             "titulo" => "required|max:255",  
             "descripcion" => "required",  
             "imagen" => "required",  
         ]); 
-
-        $post = new Post;
-        $post->titulo = $request->titulo;
-        $post->descripcion = $request->descripcion;
-        $post->imagen = $request->imagen;
-        $post->user_id = auth()->user()->id;
-        $post->save();
+        
+        // esta es una de al menos 4 formas de hacer un INSERT en la DB 
+        // ver detalles en notas, video 107 
+        $request->user()->posts()->create([
+            "titulo" => $request->titulo,
+            "descripcion" => $request->descripcion,
+            "imagen" => $request->imagen,
+            // "user_id" => auth()->user()->id,
+        ]);
         
         return redirect()->route("posts.index", auth()->user()->username);
     }
