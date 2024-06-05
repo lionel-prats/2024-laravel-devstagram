@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ImagenController;
@@ -30,3 +31,6 @@ Route::post('/imagen', [ImagenController::class, "store"])->name("imagenes.store
 
 // Post Comments
 Route::post('/{user:username}/posts/{post}', [ComentarioController::class, "store"])->name("comentarios.store");
+
+// Likes
+Route::post('/posts/{post}/likes', [LikeController::class, "store"])->name("posts.likes.store");

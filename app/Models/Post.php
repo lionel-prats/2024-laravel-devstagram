@@ -20,9 +20,22 @@ class Post extends Model
         // return $this->belongsTo(User::class);
         return $this->belongsTo(User::class)->select(["name", "username"]);
     }
+
+    // relacion entre posts y comentarios
     public function comentarios()
     {
         return $this->hasMany(Comentario::class);
+    }
+
+    // relacion entre posts y likes
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function checkLike(User $user)
+    {
+        return $this->likes->contains("user_id", $user->id);
     }
 
 }
