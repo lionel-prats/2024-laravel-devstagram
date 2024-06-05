@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class PostController extends Controller
 {
@@ -89,9 +90,17 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         // ejecucion de PostPolicy->delete() (v129)
+        // este policy retorna true si pasa la validacion y en caso contrario detiene la ejecucion de este controlador retornando un error 403 (v129)
         $this->authorize("delete", $post); 
         
         $post->delete();
+        
+        // $imagen_path = "C:\laragon\www\devstagram\public\uploads/243940dd-28c1-4979-80f8-a704172b66e1.png"
+        $imagen_path = public_path("uploads/" . $post->imagen);
+        if(File::exists($imagen_path)){
+            unlink($imagen_path);
+        }
+
         return redirect()->route("posts.index", auth()->user()->username)->with("publicacion_eliminada", "Publicación Eliminada Correctamente");
     }
 }

@@ -13,7 +13,9 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): bool
     {
-        // $user es instancia del modelo User cno la info el usuario autenticado (v129)
+        // $user es instancia del modelo User con la info el usuario autenticado (v129)
+        // $post es instancia de un post a eliminar (v129)
+        // este metodo delete() del Policy lo ejecutamos desde PostController->destroy() pasandole como argumento la instancia del post a eliminar (v129)
         return $user->id === $post->user_id;
     }
 }
