@@ -8,19 +8,24 @@ use App\Http\Controllers\ImagenController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ComentarioController;
+use App\Http\Controllers\PerfilController;
 
 Route::get('/', function () {
     return view('principal');
 });
 
-// User Authentication
+// User Authentication routes
 Route::get('/register', [RegisterController::class, "index"])->name("register");
 Route::post('/register', [RegisterController::class, "store"]);
 Route::get('/login', [LoginController::class, "index"])->name("login");
 Route::post('/login', [LoginController::class, "store"]);
 Route::post('/logout', [LogoutController::class, "store"])->name("logout");
 
-// Posts
+// User profile routes
+Route::get("/editar-perfil", [PerfilController::class, "index"])->name("perfil.index");
+Route::post("/editar-perfil", [PerfilController::class, "store"])->name("perfil.store");
+
+// Posts routes
 // Route::get('/muro', [PostController::class, "index"])->name("posts.index");
 Route::get('/{user:username}', [PostController::class, "index"])->name("posts.index");
 Route::get('/posts/create', [PostController::class, "create"])->name("posts.create");
@@ -29,9 +34,10 @@ Route::get('/{user:username}/posts/{post}', [PostController::class, "show"])->na
 Route::delete('/posts/{post}', [PostController::class, "destroy"])->name("posts.destroy");
 Route::post('/imagen', [ImagenController::class, "store"])->name("imagenes.store");
 
-// Post Comments
+// Post Comments routes
 Route::post('/{user:username}/posts/{post}', [ComentarioController::class, "store"])->name("comentarios.store");
 
-// Likes
+// Likes routes
 Route::post('/posts/{post}/likes', [LikeController::class, "store"])->name("posts.likes.store");
 Route::delete('/posts/{post}/likes', [LikeController::class, "destroy"])->name("posts.likes.destroy");
+

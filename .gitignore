@@ -19,4 +19,5 @@ yarn-error.log
 /.vscode
 
 /public/uploads/*
+/public/perfiles/*
 /material_desarrollo
