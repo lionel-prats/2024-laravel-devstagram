@@ -40,10 +40,12 @@
                     <span class="font-normal">Likes</span>
                 </p>
             </div>
-            
-            
             <div>
-                <p class="font-bold">{{$post->user->username}}</p>
+                <a 
+                    class="font-bold"
+                    href="{{route("posts.index", $user)}}"
+                >{{$post->user->username}}</a>
+                
                 <p class="text-sm text-gray-500">
                     {{$post->created_at->diffForHumans()}}
                 </p>

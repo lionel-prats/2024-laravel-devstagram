@@ -56,35 +56,70 @@ class User extends Authenticatable
     }
 
     /**
-     * este metodo lo usamos para hacer un INSERT o un DELETE en followers
-     * 
-     * se debe ejecutar desde una instancia de User, adjudicandose automaticamente el id de esa instancia al campo F.user_id, y el id recibido por parametro al campo F.follower_id
-     * 
-     * Ejemplo de uso INSERT => $user->followers()->attach(3); 
-     * 
-     * en este ejemplo, el INSERT es el siguiente => F.user_id = $user->id | F.follower_id = 3
-     * 
-     * Ejemplo de uso DELETE => $user->followers()->detach(3); 
-     * 
-     * en este ejemplo, el DELETE es el siguiente => WHERE F.user_id = $user->id AND F.follower_id = 3
-     * 
-     * IMPORTANTE => F.user_id toma el valor $user->id porque en este metodo lo definimos antes que F.follower_id
+     ** Este metodo lo usamos para interactuar con la tabla followers desde instancias del modelo User (nos permite todas las operaciones CRUD en la tabla followers) 
+     * ---
+     ** **Ejemplo de uso para hacer un INSERT** 
+     * ```$user->followers()->attach($follower_id);```
+     * ```sql
+     * -- equivalente en SQL vvv
+     * INSERT INTO followers (user_id, follower_id) VALUES ($user->id, $follower_id);
+     * ```
+     * ---
+     ** Ejemplo de uso para hacer un DELETE 
+     * ```$user->followers()->detach($follower_id);```
+     * ```sql
+     * -- equivalente en SQL vvv
+     * DELETE FROM followers WHERE user_id = $user->id AND follower_id = $follower_id;
+     * ```
+     * ---
+     ** Ejemplo de uso para hacer un SELECT 
+     * ```$user->followers()->count();```
+     * ```sql
+     * -- equivalente en SQL vvv
+     * SELECT COUNT(*) FROM followers WHERE user_id = $user->id;
+     * ```
+     * --- 
+     ** IMPORTANTE: 
+     *
+     *      el valor de ```$user->id``` se asigna automaticamente al campo ```user_id``` y no al campo ```follower_id``` porque asi lo especifique dentro de este mismo metodo (parametros 3° y 4° del ```belongsToMany()``` respectivamente).
+     *
+     *      Si invierto el orden de estos 2 parametros, ```$user->id``` se asignara al campo ```follower_id```
      */
     public function followers()
     {
         return $this->belongsToMany(User::class, "followers", "user_id", "follower_id");
+        // return $this->belongsToMany(User::class, "followers", "follower_id", "user_id");
     }
 
     /**
-     * este metodo nos permite saber si un usuario ya sigue a otro
-     * 
-     * se debe ejecutar desde una instancia de User
-     * 
-     * Ejemplo de uso => $user->es_seguido_por(3); 
-     * 
-     * consulta SQL => SELECT COUNT(*) AS total FROM followers WHERE user_id = $user->id and follower_id = 3
-     * 
-     * return bool => bool: TRUE si total > 0, FALSE en caso contrario
+     ** Este metodo funciona igual que el metodo followers(), con la unica diferencia de que el ```$user->id``` de la instancia desde la que ejecutamos este metodo se asigna automaticamente al campo follower_id
+     * ---
+     ** Ejemplo de uso para hacer un SELECT 
+     * ```$user->followings()->count();```
+     * ```sql
+     * -- equivalente en SQL vvv
+     * SELECT COUNT(*) FROM followers WHERE follower_id = $user->id;
+     * ```
+     */
+    public function followings()
+    {
+        return $this->belongsToMany(User::class, "followers", "follower_id", "user_id");
+    }
+
+    /**
+     ** Este metodo nos permite saber si un usuario es seguido o no por otro
+     * ---
+     ** Ejemplo de uso
+     * ```$user->es_seguido_por($follower_id);```
+     * ```sql
+     * -- equivalente en SQL vvv
+     * SELECT IF(COUNT(*) >= 1, "true", "false") AS es_seguido
+     * FROM followers 
+     * WHERE user_id = $user->id 
+     * AND follower_id = $follower_id
+     * ```
+     * --- 
+     * return ```@bool true``` si el ```$user->id``` es seguido por  ```$follower_id```, ```@bool false``` en caso contrario.
      */
     // public function es_seguido_por(User $user)
     public function es_seguido_por($follower_id)
@@ -92,8 +127,4 @@ class User extends Authenticatable
         // return $this->followers->contains($user->id);
         return $this->followers->contains($follower_id);
     }
-
-    /**
-     * almacenar los que seguimos
-     */
 }
