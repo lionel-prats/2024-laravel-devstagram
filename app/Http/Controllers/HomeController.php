@@ -11,7 +11,7 @@ class HomeController extends Controller
     {
         $this->middleware("auth");
     }
-    
+
     public function __invoke()
     {
         // $seguidos_por_el_usuario_autenticado = auth()->user()->followings->toArray();
@@ -22,7 +22,7 @@ class HomeController extends Controller
             "user_id", 
             $array_ids_usuarios_seguidos_por_el_usuario_autenticado)
             ->latest()
-            ->paginate(20);
+            ->paginate(3);
         $data = [
             "posts" => $posts
         ];

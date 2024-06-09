@@ -28,7 +28,7 @@ class PostController extends Controller
         // $posts = Post::where("user_id", $user->id)->simplePaginate(4);
         $posts = Post::where("user_id", $user->id)
             ->latest()
-            ->paginate(8);
+            ->paginate(3);
 
         $data = [
             "user" => $user,
