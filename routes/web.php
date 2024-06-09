@@ -10,10 +10,14 @@ use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ComentarioController;
+use App\Http\Controllers\HomeController;
 
-Route::get('/', function () {
+// a esta forma de definir y ejecutar la peticion a una ruta de nuestra aplicacion se la conoce como "Routing tipo Closure" (v154)
+/* Route::get('/', function () {
     return view('principal');
-});
+}); */
+
+Route::get('/', HomeController::class)->name("home");
 
 // User Authentication routes
 Route::get('/register', [RegisterController::class, "index"])->name("register");

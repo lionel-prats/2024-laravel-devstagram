@@ -17,27 +17,6 @@ class PostController extends Controller
         $this->middleware("auth")->except(["index","show"]);
     }
 
-    private function ddl($data, $exit = null) 
-    {
-        if($exit == "v") {
-            echo "<pre>";
-            var_dump($data);
-            echo "</pre>";
-            return;
-        } elseif($exit == "ve") {
-            echo "<pre>";
-            var_dump($data);
-            exit;
-        } elseif($exit == "pe") {
-            echo "<pre>";
-            print_r($data);
-            exit;
-        }
-        echo "<pre>";
-        print_r($data);
-        echo "</pre>";
-    }
-
     public function index(User $user)
     {
         // // acceder a los posts asociados a un usuario usando la coleccion posts() definida en el modelo User (v117) vvv
@@ -47,7 +26,9 @@ class PostController extends Controller
 
         // $posts = Post::where("user_id", $user->id)->get();
         // $posts = Post::where("user_id", $user->id)->simplePaginate(4);
-        $posts = Post::where("user_id", $user->id)->paginate(8);
+        $posts = Post::where("user_id", $user->id)
+            ->latest()
+            ->paginate(8);
 
         $data = [
             "user" => $user,
