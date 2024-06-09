@@ -5,13 +5,11 @@
     <div class="container mx-auto md:flex">
         <div class="md:w-1/2">
             <img src="{{asset("uploads/$post->imagen")}}" alt="Imagen del post {{$post->titulo}}">
-
+            
 
             <div class="p-3 flex items-center gap-4">
                 @auth
-                    
                     <livewire:like-post :post="$post" />
-
                     {{-- 
                     @if ($post->checkLike(auth()->user()))
                         <form 
@@ -42,10 +40,18 @@
                     @endif 
                     --}}
                 @endauth
+                {{-- 
                 <p class="font-bold">
                     {{ $post->likes()->count() }} 
                     <span class="font-normal">Likes</span>
-                </p>
+                </p> 
+                --}}
+                @guest
+                    <p class="font-bold">
+                        {{ $post->likes()->count() }} 
+                        <span class="font-normal">Likes</span>
+                    </p> 
+                @endguest
             </div>
             <div>
                 <a 

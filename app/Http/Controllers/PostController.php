@@ -63,8 +63,8 @@ class PostController extends Controller
     public function show(User $user, Post $post)
     {
         $data = [
-            "user" => $user, // objeto User del usuario del muro que estamos visitando
-            "post" => $post,
+            "user" => $user, // instancia del usuario autor del post que estamos visitando
+            "post" => $post, // instancia del post que estamos visitando
         ];
         return view("posts.show", $data);
     }
